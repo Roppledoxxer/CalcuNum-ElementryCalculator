@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calcu-num.io</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #1a1a1a;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        color: #fff;
+    }
+
+    .calculator {
+        background: #2c2c2c;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    #display {
+        width: 93%;
+        height: 50px;
+        font-size: 24px;
+        text-align: right;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 5px;
+    }
+
+    .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 70px);
+        grid-gap: 10px;
+    }
+
+    button {
+        padding: 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background: #444;
+        color: #fff;
+        transition: background 0.2s;
+    }
+
+    button:hover {
+        background: #666;
+    }
+
+    button.operator {
+        background: #ff9500;
+        color: #fff;
+    }
+
+    button.operator:hover {
+        background: #ffa733;
+    }
+
+    button.equal {
+        background: #00cc66;
+        color: #fff;
+        grid-column: span 2;
+    }
+
+    button.equal:hover {
+        background: #33dd88;
+    }
+</style>
+</head>
+<body>
+
+<div class="calculator">
+    <input type="text" id="display" disabled placeholder="Calcu-num.io">
+    <div class="buttons">
+        <button onclick="appendNumber('7')">7</button>
+        <button onclick="appendNumber('8')">8</button>
+        <button onclick="appendNumber('9')">9</button>
+        <button class="operator" onclick="appendOperator('÷')">÷</button>
+
+        <button onclick="appendNumber('4')">4</button>
+        <button onclick="appendNumber('5')">5</button>
+        <button onclick="appendNumber('6')">6</button>
+        <button class="operator" onclick="appendOperator('×')">×</button>
+
+        <button onclick="appendNumber('1')">1</button>
+        <button onclick="appendNumber('2')">2</button>
+        <button onclick="appendNumber('3')">3</button>
+        <button class="operator" onclick="appendOperator('-')">-</button>
+
+        <button onclick="appendNumber('0')">0</button>
+        <button onclick="appendNumber('.')">.</button>
+        <button class="equal" onclick="calculateResult()">=</button>
+        <button class="operator" onclick="appendOperator('+')">+</button>
+
+        <button onclick="clearDisplay()" style="grid-column: span 4; background: #cc0000;">C</button>
+    </div>
+</div>
+
+<script>
+    const display = document.getElementById('display');
+
+    function appendNumber(number) {
+        display.value += number;
+    }
+
+    function appendOperator(operator) {
+        const lastChar = display.value[display.value.length - 1];
+        if (lastChar && '+-×÷'.includes(lastChar)) {
+            // Replace last operator if already present
+            display.value = display.value.slice(0, -1) + operator;
+        } else {
+            display.value += operator;
+        }
+    }
+
+    function calculateResult() {
+        try {
+            // Replace × and ÷ with * and / for calculation
+            const expression = display.value.replace(/×/g, '*').replace(/÷/g, '/');
+            display.value = eval(expression);
+        } catch (e) {
+            display.value = "Error";
+        }
+    }
+
+    function clearDisplay() {
+        display.value = '';
+    }
+</script>
+
+</body>
+</html>
